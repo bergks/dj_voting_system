@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Система голосования{% endblock %}</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    
+</head>
+<body class='d-flex flex-column min-vh-100'>
+
+    {%include 'includes/navigation.html'%}
+
+    <main class="container flex-grow-1">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <div class='container'>
+        {% include 'includes/pagination.html' %}
+    <div/>
+
+    <footer class="container mt-5 mb-3 text-center text-muted">
+        <hr>
+        <p>© <span id="current-year"></span> Система голосования. Все права защищены.</p>
+    </footer>
+
+</body>
+</html>
