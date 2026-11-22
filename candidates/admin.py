@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Candidate, Category
-# Register your models here.
+
+
 class CandidateAdmin(admin.ModelAdmin):
     list_display = (
         'title',
@@ -11,8 +12,24 @@ class CandidateAdmin(admin.ModelAdmin):
     list_editable = (
         'description',
     )
-    search_fileds = ('title',)
+    search_fields = ('title',)
     list_filter = ('category',)
+    filter_horizontal = ('category',)
+
+
+@admin.register(Category)
+class CategoryRegister(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'title',
+        'slug'
+    )
+    list_editable = (
+        'title',
+        'slug',
+    )
+    list_display_links = ('id', )
+    search_fields = ('title',)
+
 
 admin.site.register(Candidate, CandidateAdmin)
-admin.site.register(Category)

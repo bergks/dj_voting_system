@@ -1,8 +1,8 @@
-import sqlite3
 from django.shortcuts import render
 from django.db.models import Count
 from django.db.models import F
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 
 from .models import Vote, Poll
 
@@ -44,10 +44,10 @@ def poll_list(request):
 
 
 def poll_detail(request, poll_id):
-    try:
-        poll = Poll.objects.get(pk=poll_id)
-    except:
-        return render(request, "votes/poll_detail.html", {"poll": None}, status=404)
+    poll = get_object_or_404(
+        Poll,
+        pk=poll_id
+    )
 
     choices_data = poll.choices.all().annotate(votes_count=Count('votes'))
 
@@ -66,6 +66,12 @@ def statistics(request):
 
     total_polls = Poll.objects.count()
     total_votes = Vote.objects.count()
+    status_polls = (
+            Poll.objects
+            .values('status')
+            .annotate(total=Count('id'))
+            .order_by('status')
+        )
 
     stats = (
         Poll.objects.annotate(votes_count=Count("votes"))
@@ -87,6 +93,8 @@ def statistics(request):
     return render(request, "votes/statistics.html", {
         "total_polls": total_polls,
         "total_votes": total_votes,
+        'active': status_polls[0],
+        'finish': status_polls[1],
         "stats": stats,
         "recent_votes": recent_votes,
         }

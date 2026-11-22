@@ -1,12 +1,12 @@
 from django.db import models
 from user.models import User, BaseModel
 
-# Create your models here.
+
 class Poll(BaseModel):
     class PollStatus(models.TextChoices):
         ACTIVE = "AC", "Активно"
         FINISHED = "FN", "Завершено"
-    
+
     question = models.CharField(
         max_length=256,
         verbose_name='Вопрос')
@@ -33,6 +33,7 @@ class Poll(BaseModel):
     def __str__(self):
         return self.question
 
+
 class Vote(BaseModel):
     poll = models.ForeignKey(
         Poll,
@@ -56,5 +57,5 @@ class Vote(BaseModel):
     )
 
     class Meta:
-            verbose_name = 'Голос'
-            verbose_name_plural = 'Голоса'
+        verbose_name = 'Голос'
+        verbose_name_plural = 'Голоса'

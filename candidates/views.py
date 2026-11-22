@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .models import Category, Candidate
 from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -9,7 +10,11 @@ def candidates_list(request):
     category_filter = request.GET.get("category", "all")
     categories = Category.objects.all()
 
-    candidates = Candidate.objects.all().order_by("title").prefetch_related("category")
+    candidates = Candidate.objects.all().order_by(
+            "title"
+        ).prefetch_related(
+            "category"
+        )
 
     if search_query:
         candidates = candidates.filter(title__icontains=search_query)
@@ -37,12 +42,11 @@ def candidates_list(request):
 
 
 def candidate_detail(request, candidate_id):
-    try:
-        candidate = Candidate.objects.prefetch_related("category").get(pk=candidate_id)
-    except:
-        return render(
-            request, "candidates/canidate_detail.html", {"candidate": None}, status=404
-        )
+
+    candidate = get_object_or_404(
+        Candidate.objects.prefetch_related('category'),
+        pk=candidate_id
+    )
 
     return render(
         request,

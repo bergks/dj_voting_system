@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class BaseModel(models.Model):
     created_at = models.DateTimeField(
         auto_now_add=True,
@@ -9,6 +9,7 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
+
 
 class User(models.Model):
     username = models.CharField(

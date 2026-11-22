@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Poll, Vote
-# Register your models here.
+
+
 class PollAdmin(admin.ModelAdmin):
     list_display = (
         'question',
@@ -15,6 +16,8 @@ class PollAdmin(admin.ModelAdmin):
 
     search_fields = ('question', )
     list_filter = ('status', )
+    filter_horizontal = ('choices',)
+
 
 class VoteAdmin(admin.ModelAdmin):
     list_display = (
@@ -23,8 +26,10 @@ class VoteAdmin(admin.ModelAdmin):
         'user',
         'created_at'
     )
+
     def has_change_permission(self, request, obj=None):
         return False
+
 
 admin.site.register(Poll, PollAdmin)
 admin.site.register(Vote, VoteAdmin)
